@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feedback Form</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./file.ico" sizes="512x512">
+</head>
+ <style>
+        .loader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loader img {
+            width: 150px; /* Adjust the size as needed */
+            animation: spin 2s linear infinite;
+        }
+        .loader p {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+<body>
+    <div class="loader" id="loader">
+        <img src="load.png" alt="Loading..."> <!-- Replace 'your-image.png' with the path to your image -->
+        <p>Loading, please wait...</p>
+    </div>
+    <div class="container">
+        <div class="contact-box">
+            <div class="left"></div>
+            <div class="right">
+                <form action="submit_form.php" method="post">
+                    <div class="form" id="form1">
+                        <h2>Feedback Form</h2>
+                        <input type="text" class="field" name="rollNo" placeholder="RollNo" required>
+                        <input type="text" class="field" name="phone" placeholder="Phone" required>
+                        <input type="text" class="field" name="breakfast" placeholder="Breakfast" required>
+                        <textarea name="breakfastComments" placeholder="Additional Comments" class="field"></textarea>
+                        <button type="button" class="btn" onclick="showNextForm(1)">Next</button>
+                    </div>
+                    <div class="form hidden" id="form2">
+                        <h2>Feedback Form</h2>
+                        <input type="text" class="field" name="lunch" placeholder="Lunch" required>
+                        <textarea name="lunchComments" placeholder="Additional Comments" class="field"></textarea>
+                        <button type="button" class="btn" onclick="showPrevForm(2)">Prev</button>
+                        <button type="button" class="btn" onclick="showNextForm(2)">Next</button>
+                    </div>
+                    <div class="form hidden" id="form3">
+                        <h2>Feedback Form</h2>
+                        <input type="text" class="field" name="snacks" placeholder="Snacks" required>
+                        <textarea name="snacksComments" placeholder="Additional Comments" class="field"></textarea>
+                        <button type="button" class="btn" onclick="showPrevForm(3)">Prev</button>
+                        <button type="button" class="btn" onclick="showNextForm(3)">Next</button>
+                    </div>
+                    <div class="form hidden" id="form4">
+                        <h2>Feedback Form</h2>
+                        <input type="text" class="field" name="dinner" placeholder="Dinner" required>
+                        <textarea name="dinnerComments" placeholder="Additional Comments" class="field"></textarea>
+                        <button type="button" class="btn" onclick="showPrevForm(4)">Prev</button>
+                        <button type="button" class="btn" onclick="showNextForm(4)">Next</button>
+                    </div>
+                    <div class="form hidden" id="form5">
+                        <h2>Feedback Form</h2>
+                        <label>Food Quality</label>
+                        <select class="field" name="foodQuality" required>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Very Good">Very Good</option>
+                            <option value="Average">Average</option>
+                            <option value="Good">Good</option>
+                            <option value="Worst">Worst</option>
+                        </select>
+                        <label>Service Quality</label>
+                        <select class="field" name="serviceQuality" required>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Very Good">Very Good</option>
+                            <option value="Average">Average</option>
+                            <option value="Good">Good</option>
+                            <option value="Worst">Worst</option>
+                        </select>
+                        <label>Cleanliness</label>
+                        <select class="field" name="cleanliness" required>
+                            <option value="Excellent">Excellent</option>
+                            <option value="Very Good">Very Good</option>
+                            <option value="Average">Average</option>
+                            <option value="Good">Good</option>
+                            <option value="Worst">Worst</option>
+                        </select>
+                        <textarea name="suggestions" placeholder="Suggestions for Improvement" class="field"></textarea>
+                        <button type="button" class="btn" onclick="showPrevForm(5)">Prev</button>
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function showNextForm(currentForm) {
+        document.getElementById('form' + currentForm).classList.add('hidden');
+        document.getElementById('form' + (currentForm + 1)).classList.remove('hidden');
+    }
+
+    function showPrevForm(currentForm) {
+        document.getElementById('form' + currentForm).classList.add('hidden');
+        document.getElementById('form' + (currentForm - 1)).classList.remove('hidden');
+    }
+    
+     function validateCurrentForm(currentForm) {
+            const form = document.getElementById('form' + currentForm);
+            const inputs = form.querySelectorAll('input, select, textarea');
+            let valid = true;
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    input.reportValidity();
+                    valid = false;
+                }
+            });
+            return valid;
+        }
+
+        function validateForm() {
+            let valid = true;
+            const forms = document.querySelectorAll('.form');
+            forms.forEach(form => {
+                if (!validateCurrentForm(form.id.replace('form', ''))) {
+                    valid = false;
+                }
+            });
+            return valid;
+        }
+    
+     window.onload = function() {
+            setTimeout(function() {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+            }, 3000); // Adjust the timeout duration as needed (5000ms = 5 seconds)
+        };
+</script>
+</html>
